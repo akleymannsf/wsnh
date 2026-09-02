@@ -7,11 +7,18 @@ name: Build WSNH for Windows
 on:
   push:
     branches: [main, master]
+    paths: ["windows/**"]
   workflow_dispatch: {}
 
 jobs:
   build:
     runs-on: windows-latest
+    # This repo holds both the Mac and Windows projects side by side (mac/
+    # and windows/ folders) -- every dotnet/path command below runs relative
+    # to windows/ rather than the repo root.
+    defaults:
+      run:
+        working-directory: windows
 
     steps:
       - name: Check out the repo
@@ -36,4 +43,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: WSNH-Windows
-          path: bin/Release/net8.0-windows/win-x64/publish/WSNH.exe
+          path: windows/bin/Release/net8.0-windows/win-x64/publish/WSNH.exe
