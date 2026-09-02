@@ -1,0 +1,39 @@
+name: Build WSNH for Windows
+
+# Runs on a free GitHub-hosted Windows machine -- no local Windows PC or
+# .NET install needed on your end. Triggers automatically on every push to
+# main, and can also be run manually anytime from the Actions tab (the
+# "Run workflow" button), e.g. to rebuild without pushing a new commit.
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Publish self-contained single-file exe
+        run: >
+          dotnet publish WSNH.csproj
+          -c Release
+          -r win-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true
+
+      - name: Upload WSNH.exe as a build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WSNH-Windows
+          path: bin/Release/net8.0-windows/win-x64/publish/WSNH.exe
