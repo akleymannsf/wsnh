@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace WSNH.Services;
 
-file class SettingsData
+internal class SettingsData
 {
     public string? ProtectedApiKeyBase64 { get; set; }
     public string? BaseUrl { get; set; }
