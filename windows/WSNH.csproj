@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <!-- DPAPI-backed encryption for the saved API key, tied to the signed-in
-         Windows user -- the closest equivalent to Keychain on the Mac side. -->
+         Windows user: the closest equivalent to Keychain on the Mac side. -->
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
   </ItemGroup>
 
