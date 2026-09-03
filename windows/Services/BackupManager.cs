@@ -88,8 +88,7 @@ public static class BackupManager
             foreach (var snippet in snippets) { snippet.KeyCode = 0; snippet.ModifierFlags = 0; }
         }
 
-        PromptStore.Shared.Actions = actions;
-        PromptStore.Shared.Save();
+        PromptStore.Shared.ReplaceAll(actions);
         HotKeyManager.Shared.RegisterAll(PromptStore.Shared.Actions);
 
         SnippetStore.Shared.ReplaceAll(snippets);

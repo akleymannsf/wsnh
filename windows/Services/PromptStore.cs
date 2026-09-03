@@ -69,6 +69,12 @@ public sealed class PromptStore
         Save();
     }
 
+    public void ReplaceAll(List<PromptAction> actions)
+    {
+        Actions = actions;
+        Save();
+    }
+
     // MARK: - Default actions, seeded on first run
 
     public static List<PromptAction> DefaultActions() => new()
