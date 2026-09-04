@@ -110,6 +110,14 @@ public class TrayApplicationContext : ApplicationContext
             return;
         }
         _isPromptRequestInFlight = true;
+        // The popup/paste only appears once the network call finishes, so
+        // without this, a slow LLM Gateway response looks indistinguishable
+        // from "nothing happened" until an error eventually shows up out of
+        // nowhere. A balloon tip is immediate, unobtrusive confirmation that
+        // WSNH heard the hotkey and is actually working on it.
+        _trayIcon.BalloonTipTitle = "WSNH";
+        _trayIcon.BalloonTipText = "Rewriting your selected text…";
+        _trayIcon.ShowBalloonTip(2000);
 
         try
         {

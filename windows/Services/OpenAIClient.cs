@@ -28,7 +28,16 @@ public class OpenAIException : Exception
 /// </summary>
 public static class OpenAIClient
 {
-    private static readonly HttpClient Http = new(new HttpClientHandler { AllowAutoRedirect = false });
+    // Explicit and much shorter than HttpClient's 100-second default: the
+    // tray icon/balloon tip already tells the person a request is running
+    // (see TrayApplicationContext), but leaving them waiting almost two
+    // minutes before finding out the Gateway is having a slow moment isn't
+    // a good tradeoff. 25s is long enough for a normal response and short
+    // enough that a stuck one resolves quickly.
+    private static readonly HttpClient Http = new(new HttpClientHandler { AllowAutoRedirect = false })
+    {
+        Timeout = TimeSpan.FromSeconds(25)
+    };
 
     public static async Task<string> RunAsync(string model, string promptTemplate, string selectedText)
     {
@@ -59,7 +68,21 @@ public static class OpenAIClient
         var bodyJson = JsonSerializer.Serialize(body);
 
         var url = $"{SettingsStore.NormalizedBaseUrl}/chat/completions";
-        var (status, responseBody) = await SendWithRedirectsAsync(url, apiKey, bodyJson);
+
+        int status;
+        string responseBody;
+        try
+        {
+            (status, responseBody) = await SendWithRedirectsAsync(url, apiKey, bodyJson);
+        }
+        catch (TaskCanceledException)
+        {
+            // HttpClient throws this (not a dedicated timeout exception) when
+            // its Timeout elapses -- there's no user-initiated cancellation
+            // anywhere in this flow, so any TaskCanceledException here really
+            // means "the Gateway didn't respond in time."
+            throw new OpenAIException("The AI gateway is taking longer than usual to respond. Try again in a moment.");
+        }
 
         if (status < 200 || status >= 300)
         {

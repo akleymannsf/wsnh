@@ -58,6 +58,9 @@ public class WelcomeForm : Form
         content.Controls.Add(SubHeading("Before anything works: add your API key"));
         content.Controls.Add(Body("Open Preferences and paste in your API key (Salesforce LLM Gateway Express, or your own OpenAI key). The AI rewrite hotkeys won't work until that's set -- Snippets work right away, no key needed."));
 
+        content.Controls.Add(SubHeading("If the AI seems slow"));
+        content.Controls.Add(Body("A balloon tip pops up from the tray icon the moment a rewrite starts, so you know it heard your hotkey. If the AI Gateway is having a slow moment, WSNH gives up after 25 seconds and lets you know, rather than leaving you waiting indefinitely."));
+
         content.Controls.Add(SubHeading("One more thing"));
         content.Controls.Add(Body("The first time you open WSNH, Windows may warn that it's from an \"unrecognized publisher\" -- that's expected for an internal tool like this one. Click \"More info\" then \"Run anyway\" to continue."));
 

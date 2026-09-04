@@ -74,7 +74,17 @@ public class SettingsForm : Form
             ForeColor = Color.DimGray
         });
 
-        var saveButton = new Button { Text = "Save Connection Settings", Left = 16, Top = 210, Width = 200 };
+        page.Controls.Add(new Label
+        {
+            Text = "If this Gateway is slow to respond, WSNH waits up to 25 seconds before giving up and showing an error -- a balloon tip from the tray icon lets you know a request is running, so it's never silent.",
+            Left = 16,
+            Top = 196,
+            AutoSize = true,
+            MaximumSize = new Size(420, 0),
+            ForeColor = Color.DimGray
+        });
+
+        var saveButton = new Button { Text = "Save Connection Settings", Left = 16, Top = 260, Width = 200 };
         saveButton.Click += (_, _) =>
         {
             SettingsStore.SetApiKey(_apiKeyField.Text);

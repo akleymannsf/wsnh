@@ -9,7 +9,7 @@
     <AssemblyName>WSNH</AssemblyName>
     <RootNamespace>WSNH</RootNamespace>
     <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
-    <Version>2.0.0</Version>
+    <Version>1.1.0</Version>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <!-- Menu-bar-style app: no console window, no taskbar entry while running
          (it lives in the system tray, same idea as the Mac status item). -->
